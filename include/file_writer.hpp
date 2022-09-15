@@ -49,7 +49,7 @@ private:
 
   void WriteFile()
   {
-    std::string temp;
+    std::vector<char> temp;
 
     while (run_)
     {

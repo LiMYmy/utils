@@ -5,6 +5,7 @@
 #include <fstream>
 #include <iostream>
 #include <thread>
+#include <vector>
 
 class FileWriter
 {
@@ -31,7 +32,17 @@ public:
 
   void Write(std::string str)
   {
-    queue_.enqueue(str);
+    queue_.enqueue(std::vector<char>(str.begin(), str.end()));
+  }
+
+  void Write(std::vector<char> data)
+  {
+    queue_.enqueue(data);
+  }
+
+  void Write(const char* data, size_t size)
+  {
+    queue_.enqueue(std::vector<char>(data, data+size));
   }
 
 private:
@@ -57,7 +68,7 @@ private:
   }
 
   std::ofstream file_;
-  moodycamel::ReaderWriterQueue<std::string> queue_;
+  moodycamel::ReaderWriterQueue<std::vector<char>> queue_;
   std::thread write_thread_;
   bool run_ = true;
 };
